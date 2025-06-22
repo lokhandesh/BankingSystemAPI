@@ -13,4 +13,5 @@ public interface StatementService {
     List<TransactionResponseDTO> getStatementsByDateRange(Long accountId, LocalDateTime start, LocalDateTime end);
     List<TransactionResponseDTO> getStatementsByType(Long accountId, String type);
     boolean writeStatementToCsv(Long accountId, HttpServletResponse response) throws IOException;
+    String generateAndUploadStatement(Long userId) throws IOException;
 }

@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: banking_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: banking_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - banking_net
+
+  banking-api:
+    env_file:
+      - .env
+    image: lokhandesh/banking-api:1.0.0  # Will build this below
+    container_name: banking_system_api
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/banking_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+    ports:
+      - "8081:8080"
+    networks:
+      - banking_net
+    restart: always
+
+volumes:
+  postgres_data:
+
+networks:
+  banking_net:

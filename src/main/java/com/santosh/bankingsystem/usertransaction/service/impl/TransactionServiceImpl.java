@@ -111,6 +111,11 @@ public class TransactionServiceImpl implements TransactionService {
         return mapToDto(savedTransaction);
     }
 
+    @Override
+    public List<Transaction> getAllTransactionsForUser(Long userId) {
+        return transactionRepository.findByAccount_User_Id(userId);
+    }
+
     private TransactionResponseDTO mapToDto(Transaction transaction) {
         TransactionResponseDTO dto = new TransactionResponseDTO();
         dto.setId(transaction.getId());
