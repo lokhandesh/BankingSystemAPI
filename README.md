@@ -89,6 +89,13 @@ Explore all endpoints interactively using Swagger:
 
 ### 1. Build & Run with Docker Compose
 
+```aiignore
+git clone https://github.com/lokhandesh/BankingSystemAPI.git
+```
+```aiignore
+cd BankingSystemAPI
+```
+
 ```bash
    docker-compose up --build
 ```
