@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-api
+  template:
+    metadata:
+      labels:
+        app: banking-api
+    spec:
+      containers:
+        - name: banking-api
+          image: banking-api:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/banking_db
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+
+                # 🔐 Dummy AWS env vars to avoid failure
+            - name: AWS_ACCESS_KEY
+              value: dummy_access_key
+            - name: AWS_SECRET_KEY
+              value: dummy_secret_key
+            - name: AWS_REGION_KEY
+              value: ap-southeast-1
+            - name: AWS_BUCKET_KEY
+              value: dummy-bucket
+
+                # 📧 Dummy mail config
+            - name: MAIL_USERNAME
+              value: dummy@example.com
+            - name: MAIL_PASSWORD
+              value: dummy_password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-api
+spec:
+  type: NodePort
+  selector:
+    app: banking-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30008
